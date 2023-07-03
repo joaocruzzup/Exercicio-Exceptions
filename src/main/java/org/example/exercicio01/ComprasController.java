@@ -7,7 +7,6 @@ public class ComprasController {
     public Alimento comprarAlimento(){
         TipoAlimento tipoAlimento = entradaAlimento();
         Number quantidade =  entradaQuantidade(tipoAlimento);
-
         return new Alimento(tipoAlimento, quantidade);
     }
 
@@ -68,6 +67,14 @@ public class ComprasController {
         if (quantidade.doubleValue() < 0){
             throw new IllegalArgumentException("Não é permitido inserir valores negativos para quantidades");
         }
+    }
+
+    public void imprimirMenu(){
+        System.out.println("Alimentos disponíveis para a compra");
+        System.out.println("Verdura");
+        System.out.println("Legume");
+        System.out.println("Graos");
+        System.out.println("Outros");
     }
 
 }
