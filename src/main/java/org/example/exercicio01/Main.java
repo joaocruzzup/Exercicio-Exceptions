@@ -6,9 +6,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        ComprasController comprasController = new ComprasController();
+        AlimentoEntrada alimentoEntrada = new AlimentoEntrada();
+        Compravel comprasController = new ComprasController(alimentoEntrada);
         Scanner scanner = new Scanner(System.in);
         List<Alimento> listaCompras = new ArrayList<>();
+
         boolean adicionarOutroAlimento = true;
         while (adicionarOutroAlimento) {
             try {
@@ -17,11 +19,11 @@ public class Main {
                 listaCompras.add(alimento);
                 System.out.println("Alimento adicionado à lista de compras.");
 
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Erro: " + e.getMessage());
-            } catch (UnsupportedOperationException e){
+            } catch (UnsupportedOperationException e) {
                 System.out.println("");
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println("Erro: " + e.getMessage());
             } finally {
                 System.out.print("Deseja adicionar outro alimento à lista? (s/n): ");
@@ -38,8 +40,10 @@ public class Main {
             System.out.println("A quantidade de alimentos do tipo " + alimento.getTipoAlimento() + " a ser comparada é: " + alimento.getQuantidade() + " kg");
         }
 
+        scanner.close();
     }
-    public static void imprimirMenu(){
+
+    public static void imprimirMenu() {
         System.out.println("----- MENU dos tipos de alimentos disponíveis -----");
         System.out.println(" * Verdura *");
         System.out.println(" * Legume *");
