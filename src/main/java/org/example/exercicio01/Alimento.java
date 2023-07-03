@@ -10,6 +10,9 @@ public class Alimento {
         this.tipoAlimento = tipoAlimento;
         this.quantidade = quantidade;
     }
+    public Alimento(){
+
+    }
 
     public TipoAlimento getTipoAlimento() {
         return tipoAlimento;
