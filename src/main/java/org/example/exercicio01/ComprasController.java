@@ -1,80 +1,79 @@
 package org.example.exercicio01;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ComprasController {
 
     public Alimento comprarAlimento(){
         TipoAlimento tipoAlimento = entradaAlimento();
-        Number quantidade =  entradaQuantidade(tipoAlimento);
+        BigDecimal quantidade =  entradaQuantidade(tipoAlimento);
         return new Alimento(tipoAlimento, quantidade);
     }
 
     public TipoAlimento entradaAlimento (){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Digite o tipo de Alimento: ");
-        String tipoDigitado = sc.nextLine();
-        TipoAlimento tipoAlimento = TipoAlimento.valueOf(tipoDigitado.toUpperCase());
-        verificaTipoAlimento(tipoAlimento);
-        return tipoAlimento;
+        System.out.println("Digite o tipo de Alimento que você quer exatamente como está no menu");
+        System.out.print("Digite aqui: ");
+        String tipoDigitado = sc.nextLine().toUpperCase();
+        verificaTipoAlimento(tipoDigitado);
+        return TipoAlimento.valueOf(tipoDigitado.toUpperCase());
     }
 
-    public Number entradaQuantidade(TipoAlimento tipoAlimento){
+    public BigDecimal entradaQuantidade(TipoAlimento tipoAlimento){
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite a quantidade que deseja comprar: ");
-        Number quantidade = null;
+        BigDecimal quantidade = null;
 
         if (tipoAlimento.equals(TipoAlimento.VERDURA) || tipoAlimento.equals(TipoAlimento.GRAOS)) {
-            quantidade = sc.nextDouble();
+            quantidade = sc.nextBigDecimal();
+            verificaQuantidade(quantidade);
+            verificaInstanciaQuantidade(tipoAlimento, quantidade);
+            return quantidade;
         } else if (tipoAlimento.equals(TipoAlimento.LEGUME) || tipoAlimento.equals(TipoAlimento.OUTROS)) {
-            quantidade = sc.nextInt();
+            quantidade = sc.nextBigDecimal();
+            verificaQuantidade(quantidade);
+            verificaInstanciaQuantidade(tipoAlimento, quantidade);
+            return quantidade;
         }
-        verificaQuantidade(quantidade);
-        verificaInstanciaQuantidade(tipoAlimento, quantidade);
         return quantidade;
     }
 
 
 
-    public void verificaTipoAlimento(TipoAlimento tipoAlimento){
+    public void verificaTipoAlimento(String tipoAlimento){
         if (tipoAlimento == null){
             throw new UnsupportedOperationException("Não é permitido inserir nome vazio");
         }
-        if (tipoAlimento != TipoAlimento.VERDURA && tipoAlimento != TipoAlimento.GRAOS && tipoAlimento != TipoAlimento.LEGUME  && tipoAlimento != TipoAlimento.OUTROS){
+        if (!tipoAlimento.equals("VERDURA") && !tipoAlimento.equals("LEGUME") && !tipoAlimento.equals("GRAOS")  && !tipoAlimento.equals("OUTROS")){
             throw new IllegalArgumentException("Tipo de alimento inválido");
         }
     }
 
-    public void verificaInstanciaQuantidade(TipoAlimento tipoAlimento, Number quantidade){
-        if (tipoAlimento.equals(TipoAlimento.VERDURA) && quantidade instanceof Integer){
-                throw new NumberFormatException("Para verdura, a quantidade deve ser informada com ponto");
+    public void verificaInstanciaQuantidade(TipoAlimento tipoAlimento, BigDecimal quantidade){
+        if (tipoAlimento.equals(TipoAlimento.VERDURA) && quantidade.scale() == 0){
+            throw new NumberFormatException("Para verdura, a quantidade deve ser informada com casas decimais");
         }
-        if (tipoAlimento.equals(TipoAlimento.GRAOS) && quantidade instanceof Integer){
-                throw new NumberFormatException("Para verdura, a quantidade deve ser informada com ponto");
+        if (tipoAlimento.equals(TipoAlimento.GRAOS) && quantidade.scale() == 0){
+            throw new NumberFormatException("Para grãos, a quantidade deve ser informada com casas decimais");
         }
-        if (tipoAlimento.equals(TipoAlimento.LEGUME) && quantidade instanceof Double){
-            throw new NumberFormatException("Para Legume, a quantidade deve ser informada em unidades inteiras");
+        if (tipoAlimento.equals(TipoAlimento.LEGUME) && quantidade.scale() > 0){
+            throw new NumberFormatException("Para legume, a quantidade deve ser informada em unidades inteiras");
         }
-        if (tipoAlimento.equals(TipoAlimento.OUTROS) && quantidade instanceof Double){
-            throw new NumberFormatException("Para Outros, a quantidade deve ser informada em unidades inteiras");
+        if (tipoAlimento.equals(TipoAlimento.OUTROS) && quantidade.scale() > 0){
+            throw new NumberFormatException("Para outros, a quantidade deve ser informada em unidades inteiras");
         }
     }
 
-    public void verificaQuantidade(Number quantidade){
+    public void verificaQuantidade(BigDecimal  quantidade){
         if (quantidade == null){
             throw new UnsupportedOperationException("Não é permitido inserir valor vazio");
         }
-        if (quantidade.doubleValue() < 0){
+        if (quantidade.compareTo(BigDecimal.ZERO) < 0){
             throw new IllegalArgumentException("Não é permitido inserir valores negativos para quantidades");
         }
     }
 
-    public void imprimirMenu(){
-        System.out.println("Alimentos disponíveis para a compra");
-        System.out.println("Verdura");
-        System.out.println("Legume");
-        System.out.println("Graos");
-        System.out.println("Outros");
-    }
+
 
 }

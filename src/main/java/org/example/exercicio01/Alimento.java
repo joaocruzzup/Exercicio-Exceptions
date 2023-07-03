@@ -1,10 +1,12 @@
 package org.example.exercicio01;
 
+import java.math.BigDecimal;
+
 public class Alimento {
     TipoAlimento tipoAlimento;
-    private Number quantidade;
+    private BigDecimal quantidade;
 
-    public Alimento(TipoAlimento tipoAlimento, Number quantidade) {
+    public Alimento(TipoAlimento tipoAlimento, BigDecimal quantidade) {
         this.tipoAlimento = tipoAlimento;
         this.quantidade = quantidade;
     }
@@ -17,7 +19,11 @@ public class Alimento {
         this.tipoAlimento = tipoAlimento;
     }
 
-    public void setQuantidade(Number quantidade) {
+    public void setQuantidade(BigDecimal quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public BigDecimal getQuantidade() {
+        return quantidade;
     }
 }
